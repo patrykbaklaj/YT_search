@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import './App.css';
 import SearchBar from './components/search_bar';
 import YTSearch from 'youtube-api-search';
@@ -17,23 +18,32 @@ class App extends Component {
       videos: [],
       selectedVideo: null
     };
-    YTSearch({key: API_KEY, term: 'audi'}, videos => {
+  
+    this.videoSearch('rs3');
+    
+  }
+
+  videoSearch(query) {
+    YTSearch({key: API_KEY, term: query}, videos => {
       this.setState({
         videos: videos,
         selectedVideo: videos[0]
       });
-//      in ES6 same as: this.setState({videos: videos});
     });
   }
-
+  
   render(){
+    const videoSearch = _.debounce( (query) => { this.videoSearch(query) }, 400 );
+    
     
     return (
-      <div className='container-fluid d-flex flex-column align-items-center'>
-       <h2>Name </h2>
-        <SearchBar />
+      <div className='container-fluid row '>
+        <SearchBar onSearchQueryChange={ videoSearch }/>
         <VideoDetails video={ this.state.selectedVideo }/>
-        <VideoList videos={ this.state.videos }/>
+        <VideoList 
+          videos={ this.state.videos }
+          onVideoSelect={ selectedVideo => this.setState({ selectedVideo }) }
+        />
       </div>
     );
   }

@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "http://patrykbaklaj.github.io/sample",
   "dependencies": {
+    "lodash": "^4.17.5",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1",
